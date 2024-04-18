@@ -11,6 +11,7 @@ import ProfilePage from "./pages/profile-page.jsx";
 import Dashboard from "./pages/dashbord.jsx";
 import CreateProduct from "./pages/createProduct.jsx";
 import CreateProductList from "./pages/createProductList.jsx";
+import UpdateProductPage from "./pages/UpdateProductPage.jsx";
 const App = () => {
   return (
     <BrowserRouter>
@@ -22,7 +23,8 @@ const App = () => {
         <Route path="/details/:id" element={<ProductDetails />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/CreateProduct" element={<CreateProduct />} />
-        <Route path="/CreateProductList" element={<CreateProductList />} />
+        <Route path="/productList" element={<CreateProductList />} />
+        <Route path="/update/:id" element={<UpdateProductPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/otp" element={<OtpPage />} />
         <Route path="/profile" element={<ProfilePage />} />

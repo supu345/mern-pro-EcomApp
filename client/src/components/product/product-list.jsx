@@ -46,23 +46,68 @@ const ProductList = () => {
           <div className="col-md-3 p-2">
             <div className="card vh-100 p-3 shadow-sm">
               <label className="form-label mt-3">Brands</label>
-              <select className="form-control form-select">
+              <select
+                value={Filter.brandID}
+                onChange={async (e) => {
+                  await inputOnChange("brandID", e.target.value);
+                }}
+                className="form-control form-select"
+              >
                 <option value="">Choose Brand</option>
+                {BrandList !== null ? (
+                  BrandList.map((item, i) => {
+                    return (
+                      <option value={item["_id"]}>{item["brandName"]}</option>
+                    );
+                  })
+                ) : (
+                  <option></option>
+                )}
               </select>
               <label className="form-label mt-3">Categories</label>
-              <select className="form-control form-select">
+              <select
+                value={Filter.categoryID}
+                onChange={async (e) => {
+                  await inputOnChange("categoryID", e.target.value);
+                }}
+                className="form-control form-select"
+              >
                 <option value="">Choose Category</option>
+                {CategoryList !== null ? (
+                  CategoryList.map((item, i) => {
+                    return (
+                      <option value={item["_id"]}>
+                        {item["categoryName"]}
+                      </option>
+                    );
+                  })
+                ) : (
+                  <option></option>
+                )}
               </select>
-              <label className="form-label mt-3">Maximum Price $</label>
+              <label className="form-label mt-3">
+                Maximum Price ${Filter.priceMax}
+              </label>
               <input
+                value={Filter.priceMax}
+                onChange={async (e) => {
+                  await inputOnChange("priceMax", e.target.value);
+                }}
                 min={0}
                 max={1000000}
                 step={1000}
                 type="range"
                 className="form-range"
               />
-              <label className="form-label mt-3">Minimum Price $</label>
+
+              <label className="form-label mt-3">
+                Minimum Price ${Filter.priceMin}
+              </label>
               <input
+                value={Filter.priceMin}
+                onChange={async (e) => {
+                  await inputOnChange("priceMin", e.target.value);
+                }}
                 min={0}
                 max={1000000}
                 step={1000}

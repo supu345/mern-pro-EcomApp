@@ -45,6 +45,10 @@ body {
   font-size: 14px;
 }
 
+.list-img {
+  width: auto;
+  height: 80px;
+}
 .product-img-sm {
   width: 50px;
   height: auto;

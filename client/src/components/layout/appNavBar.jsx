@@ -4,13 +4,13 @@ import logo from "../../assets/images/plainb-logo.svg";
 const AppNavBar = () => {
   return (
     <>
-      <div className="container-fluid text-white p-2 bg-success">
+      <div className="container-fluid text-white p-2 bg-warning">
         <div className="container">
           <div className="row justify-content-around">
             <div className="col-md-6">
               <span>
                 <span className="f-12">
-                  <i className="bi bi-envelope"></i> Support@PlanB.com
+                  <i className="bi bi-envelope"></i> Support@Bazar.com
                 </span>
                 <span className="f-12 mx-2">
                   <i className="bi bi-envelope"></i> 01774688159
@@ -97,23 +97,56 @@ const AppNavBar = () => {
             >
               <i className="bi text-dark bi-heart"></i>
             </Link>
+
+            {/* <Link
+                type="button"
+                className="btn ms-3 btn-success d-flex dropdown"
+                to="/dashboard"
+              >
+                Dashboard1
+              </Link> */}
+
             <Link
+              class="nav-item dropdown ms-3 p-2  bg-warning text-black rounded "
               type="button"
-              className="btn ms-3 btn-success d-flex"
-              to="/dashboard"
             >
-              Dashboard
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Dashboard
+              </a>
+              <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
+                <Link to="/CreateProduct">
+                  <li>
+                    <a class="dropdown-item" href="#">
+                      Create
+                    </a>
+                  </li>
+                </Link>
+                <Link to="/productList">
+                  <li>
+                    <a class="dropdown-item" href="#">
+                      productList
+                    </a>
+                  </li>
+                </Link>
+              </ul>
             </Link>
             <Link
               type="button"
-              className="btn ms-3 btn-success d-flex"
+              className="btn ms-3 btn-warning d-flex"
               to="/profile"
             >
               Profile
             </Link>
             <Link
               type="button"
-              className="btn ms-3 btn-success d-flex"
+              className="btn ms-3 btn-warning d-flex"
               to="/profile"
             >
               Logout

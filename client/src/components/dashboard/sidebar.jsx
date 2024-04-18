@@ -8,22 +8,18 @@ const Sidebar = () => {
     <div>
       <Navbar expand="lg" className="bg-body-tertiary">
         <Container>
-          <div className="col ">
-            <Navbar.Brand>Dashbord</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="me-auto ">
-                <div className="col ">
-                  <Nav.Link>
-                    <NavLink to="/CreateProductList">List</NavLink>
-                  </Nav.Link>
-                  <Nav.Link>
-                    <NavLink to="/CreateProduct">Create</NavLink>
-                  </Nav.Link>
-                </div>
-              </Nav>
-            </Navbar.Collapse>
-          </div>
+          <Navbar.Brand>CRUD</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto">
+              <Nav.Link>
+                <NavLink to="/">List</NavLink>
+              </Nav.Link>
+              <Nav.Link>
+                <NavLink to="/CreateProduct">Create</NavLink>
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
         </Container>
       </Navbar>
     </div>

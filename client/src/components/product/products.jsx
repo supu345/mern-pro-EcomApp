@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import ProductsSkeleton from "../../skeleton/products-skeleton.jsx";
 const Products = () => {
   const { ListByRemark, ListByRemarkRequest } = ProductStore();
+
   return (
     <div className="section">
       <div className="container-fluid py-5 bg-white">
@@ -23,7 +24,7 @@ const Products = () => {
                 <li className="nav-item" role="presentation">
                   <button
                     onClick={() => {
-                      ListByRemarkRequest("new");
+                      ListByRemarkRequest("New");
                     }}
                     className="nav-link active"
                     id="pills-home-tab"
@@ -40,7 +41,7 @@ const Products = () => {
                 <li className="nav-item" role="presentation">
                   <button
                     onClick={() => {
-                      ListByRemarkRequest("trending");
+                      ListByRemarkRequest("Trending");
                     }}
                     className="nav-link"
                     id="pills-profile-tab"
@@ -74,7 +75,7 @@ const Products = () => {
                 <li className="nav-item" role="presentation">
                   <button
                     onClick={() => {
-                      ListByRemarkRequest("top");
+                      ListByRemarkRequest("Top");
                     }}
                     className="nav-link"
                     id="pills-disabled-tab"
@@ -91,7 +92,7 @@ const Products = () => {
                 <li className="nav-item" role="presentation">
                   <button
                     onClick={() => {
-                      ListByRemarkRequest("special");
+                      ListByRemarkRequest("Special");
                     }}
                     className="nav-link"
                     id="pills-disabled-tab"
