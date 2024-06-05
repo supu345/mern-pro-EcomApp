@@ -1,7 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/images/plainb-logo.svg";
+import ProductStore from "../../store/ProductStore.js";
+import UserStore from "../../store/UserStore.js";
+import UserSubmitButton from "../user/UserSubmitButton.jsx";
 const AppNavBar = () => {
+  const { SetSearchKeyword, SearchKeyword } = ProductStore();
+  const { isLogin, UserLogoutRequest } = UserStore();
+
+  const onLogout = async () => {
+    await UserLogoutRequest();
+    sessionStorage.clear();
+    localStorage.clear();
+    navigate("/");
+  };
   return (
     <>
       <div className="container-fluid text-white p-2 bg-warning">
@@ -61,12 +73,21 @@ const AppNavBar = () => {
           <div className=" d-lg-flex">
             <div className="input-group">
               <input
+                onChange={(e) => SetSearchKeyword(e.target.value)}
                 className="form-control"
                 type="search"
                 placeholder="Search"
                 aria-label="Search"
               />
-              <Link to="/" className="btn btn-outline-dark" type="submit">
+              <Link
+                to={
+                  SearchKeyword.length > 0
+                    ? `/by-keyword/${SearchKeyword}`
+                    : `/`
+                }
+                className="btn btn-outline-dark"
+                type="submit"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -98,59 +119,63 @@ const AppNavBar = () => {
               <i className="bi text-dark bi-heart"></i>
             </Link>
 
-            {/* <Link
+            {isLogin() ? (
+              <>
+                <Link
+                  class="nav-item dropdown ms-3 p-2  bg-warning text-black rounded "
+                  type="button"
+                >
+                  <a
+                    class="nav-link dropdown-toggle"
+                    href="#"
+                    id="navbarDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Dashboard
+                  </a>
+                  <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
+                    <Link to="/CreateProduct">
+                      <li>
+                        <a class="dropdown-item" href="#">
+                          Create
+                        </a>
+                      </li>
+                    </Link>
+                    <Link to="/productList">
+                      <li>
+                        <a class="dropdown-item" href="#">
+                          productList
+                        </a>
+                      </li>
+                    </Link>
+                  </ul>
+                </Link>
+                <Link
+                  type="button"
+                  className="btn ms-3 btn-warning d-flex"
+                  to="/profile"
+                >
+                  Profile
+                </Link>
+                <UserSubmitButton
+                  onClick={onLogout}
+                  text="Logout"
+                  className="btn ms-3 btn-warning d-flex"
+                >
+                  Logout
+                </UserSubmitButton>
+              </>
+            ) : (
+              <Link
                 type="button"
-                className="btn ms-3 btn-success d-flex dropdown"
-                to="/dashboard"
+                className="btn ms-3 btn-warning d-flex"
+                to="/login"
               >
-                Dashboard1
-              </Link> */}
-
-            <Link
-              class="nav-item dropdown ms-3 p-2  bg-warning text-black rounded "
-              type="button"
-            >
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Dashboard
-              </a>
-              <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
-                <Link to="/CreateProduct">
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      Create
-                    </a>
-                  </li>
-                </Link>
-                <Link to="/productList">
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      productList
-                    </a>
-                  </li>
-                </Link>
-              </ul>
-            </Link>
-            <Link
-              type="button"
-              className="btn ms-3 btn-warning d-flex"
-              to="/profile"
-            >
-              Profile
-            </Link>
-            <Link
-              type="button"
-              className="btn ms-3 btn-warning d-flex"
-              to="/profile"
-            >
-              Logout
-            </Link>
+                Login
+              </Link>
+            )}
           </div>
         </div>
       </nav>

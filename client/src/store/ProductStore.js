@@ -2,9 +2,32 @@ import create from "zustand";
 import axios from "axios";
 
 const ProductStore = create((set) => ({
+  productFormData: {
+    title: "",
+    shortDes: "",
+    price: "",
+    discount: "",
+    discountPrice: "",
+    image: "",
+    star: "",
+    remark: "",
+    stock: "",
+    categoryID: "",
+    brandID: "",
+  },
+  productFormOnChange: (name, value) => {
+    set((state) => ({
+      productFormData: {
+        ...state.productFormData,
+        [name]: value,
+      },
+    }));
+  },
+
   BrandList: null,
   BrandListRequest: async () => {
     let res = await axios.get(`/api/v1/ProductBrandList`);
+    console.log(res);
     if (res.data["status"] === "success") {
       set({ BrandList: res.data["data"] });
     }
@@ -87,11 +110,9 @@ const ProductStore = create((set) => ({
   },
 
   CreateProduct: null,
-  CreateProductRequest: async () => {
-    let res = await axios.get(`/api/v1/CreateProduct`);
-    if (res.data["status"] === "success") {
-      set({ CreateProduct: res.data["data"] });
-    }
+  CreateProductRequest: async (body) => {
+    let res = await axios.post("/api/v1/CreateProduct", body);
+    return res.data;
   },
 }));
 

@@ -1,120 +1,65 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   ErrorToast,
   IsEmpty,
   SuccessToast,
 } from "../../Helper/ValidationHelper";
-import { Create } from "../../APIServices/CRUDServices";
 import ProductStore from "../../store/ProductStore";
-import { useNavigate } from "react-router";
 
 const CreateForm = () => {
+  let navigate = useNavigate();
   const {
-    ListProduct,
-    BrandListRequest,
     BrandList,
     CategoryList,
+    BrandListRequest,
     CategoryListRequest,
-    ListByFilterRequest,
+    CreateProductRequest,
+    productFormData,
+    productFormOnChange,
   } = ProductStore();
 
-  let [Filter, SetFilter] = useState({
-    brandID: "",
-    categoryID: "",
-    priceMax: "",
-    priceMin: "",
-  });
-
-  const inputOnChange = async (name, value) => {
-    SetFilter((data) => ({
-      ...data,
-      [name]: value,
-    }));
-  };
+  console.log(BrandList);
 
   useEffect(() => {
     (async () => {
       BrandList === null ? await BrandListRequest() : null;
       CategoryList === null ? await CategoryListRequest() : null;
-      let isEveryFilterPropertyEmpty = Object.values(Filter).every(
-        (value) => value === ""
-      );
-      !isEveryFilterPropertyEmpty ? await ListByFilterRequest(Filter) : null;
     })();
-  }, [Filter]);
+  }, []);
 
-  let title,
-    shortDes,
-    price,
-    discount,
-    discountPrice,
-    image,
-    star,
-    remark,
-    stock,
-    categoryID,
-    brandID = useRef();
-  const SaveData = () => {
-    let Product_title = title ? title.value : "";
-    let Product_shortDes = shortDes ? shortDes.value : "";
-    let Product_price = price ? price.value : "";
-    let Product_discount = discount ? discount.value : "";
-    let Product_discountPrice = discountPrice ? discountPrice.value : "";
-    let Product_image = image ? image.value : "";
-    let Product_star = star ? star.value : "";
-    let Product_remark = remark ? remark.value : "";
-    let Product_stock = stock ? stock.value : "";
-    let Product_categoryID = categoryID ? categoryID.value : "";
-    let Product_brandID = brandID ? brandID.value : "";
-
-    // Rest of the function...
-
-    if (IsEmpty(Product_title)) {
+  const SaveData = async () => {
+    if (IsEmpty(productFormData.title)) {
       ErrorToast("Product title Required");
-    } else if (IsEmpty(Product_shortDes)) {
+    } else if (IsEmpty(productFormData.shortDes)) {
       ErrorToast("Product shortDes Required");
-    } else if (IsEmpty(Product_price)) {
+    } else if (IsEmpty(productFormData.price)) {
       ErrorToast("Product price Required");
-    } else if (IsEmpty(Product_discount)) {
+    } else if (IsEmpty(productFormData.discount)) {
       ErrorToast("Product discount Required");
-    } else if (IsEmpty(Product_discountPrice)) {
+    } else if (IsEmpty(productFormData.discountPrice)) {
       ErrorToast("Product discountPrice Required");
-    } else if (IsEmpty(Product_image)) {
+    } else if (IsEmpty(productFormData.image)) {
       ErrorToast("Product image Required");
-    } else if (IsEmpty(Product_star)) {
+    } else if (IsEmpty(productFormData.star)) {
       ErrorToast("Product star Required");
-    } else if (IsEmpty(Product_remark)) {
+    } else if (IsEmpty(productFormData.remark)) {
       ErrorToast("Product remark Required");
-    } else if (IsEmpty(Product_stock)) {
+    } else if (IsEmpty(productFormData.stock)) {
       ErrorToast("Product stock Required");
-    } else if (IsEmpty(Product_categoryID)) {
+    } else if (IsEmpty(productFormData.categoryID)) {
       ErrorToast("Product CategoryID Required");
-    } else if (IsEmpty(Product_brandID)) {
+    } else if (IsEmpty(productFormData.brandID)) {
       ErrorToast("Product brand_ID Required");
     } else {
-      const postBody = {
-        title: Product_title,
-        shortDes: Product_shortDes,
-        price: Product_price,
-        discount: Product_discount,
-        discountPrice: Product_discountPrice,
-        image: Product_image,
-        star: Product_star,
-        remark: Product_remark,
-        stock: Product_stock,
-        categoryID: Product_categoryID,
-        brandID: Product_brandID,
-      };
-
-      //Data Create
-      Create(postBody).then((Result) => {
-        if (Result === true) {
-          SuccessToast("Data Save Success");
-          navigate("/");
-        } else {
-          ErrorToast("Request Fail Try again");
-        }
-      });
+      const result = await CreateProductRequest(productFormData);
+      console.log(result);
+      if (result.status === "success") {
+        SuccessToast("Data Save Success");
+        navigate("/");
+      } else {
+        ErrorToast("Request Fail Try again");
+      }
     }
   };
 
@@ -125,7 +70,10 @@ const CreateForm = () => {
           <div className="col-md-4 p-2">
             <label>Product title</label>
             <input
-              ref={(input) => (title = input)}
+              value={productFormData.title}
+              onChange={(e) => {
+                productFormOnChange("title", e.target.value);
+              }}
               type="text"
               className="form-control"
             />
@@ -133,7 +81,10 @@ const CreateForm = () => {
           <div className="col-md-4 p-2">
             <label> Product shortDes</label>
             <input
-              ref={(input) => (shortDes = input)}
+              value={productFormData.shortDes}
+              onChange={(e) => {
+                productFormOnChange("shortDes", e.target.value);
+              }}
               type="text"
               className="form-control"
             />
@@ -141,7 +92,10 @@ const CreateForm = () => {
           <div className="col-md-4 p-2">
             <label> Product price</label>
             <input
-              ref={(input) => (price = input)}
+              value={productFormData.price}
+              onChange={(e) => {
+                productFormOnChange("price", e.target.value);
+              }}
               type="text"
               className="form-control"
             />
@@ -149,7 +103,10 @@ const CreateForm = () => {
           <div className="col-md-4 p-2">
             <label>Discount</label>
             <input
-              ref={(input) => (discount = input)}
+              value={productFormData.discount}
+              onChange={(e) => {
+                productFormOnChange("discount", e.target.value);
+              }}
               type="text"
               className="form-control"
             />
@@ -157,7 +114,10 @@ const CreateForm = () => {
           <div className="col-md-4 p-2">
             <label> DiscountPrice</label>
             <input
-              ref={(input) => (discountPrice = input)}
+              value={productFormData.discountPrice}
+              onChange={(e) => {
+                productFormOnChange("discountPrice", e.target.value);
+              }}
               type="text"
               className="form-control"
             />
@@ -165,7 +125,10 @@ const CreateForm = () => {
           <div className="col-md-4 p-2">
             <label> Product image</label>
             <input
-              ref={(input) => (image = input)}
+              value={productFormData.image}
+              onChange={(e) => {
+                productFormOnChange("image", e.target.value);
+              }}
               type="text"
               className="form-control"
             />
@@ -173,7 +136,10 @@ const CreateForm = () => {
           <div className="col-md-4 p-2">
             <label>Product star</label>
             <input
-              ref={(input) => (star = input)}
+              value={productFormData.star}
+              onChange={(e) => {
+                productFormOnChange("star", e.target.value);
+              }}
               type="text"
               className="form-control"
             />
@@ -181,7 +147,10 @@ const CreateForm = () => {
           <div className="col-md-4 p-2">
             <label> Stock</label>
             <input
-              ref={(input) => (stock = input)}
+              value={productFormData.stock}
+              onChange={(e) => {
+                productFormOnChange("stock", e.target.value);
+              }}
               type="text"
               className="form-control"
             />
@@ -189,7 +158,10 @@ const CreateForm = () => {
           <div className="col-md-4 p-2">
             <label> Remark</label>
             <input
-              ref={(input) => (remark = input)}
+              value={productFormData.remark}
+              onChange={(e) => {
+                productFormOnChange("remark", e.target.value);
+              }}
               type="text"
               className="form-control"
             />
@@ -198,9 +170,9 @@ const CreateForm = () => {
             <label>Brands</label>
             <div className="col-md-4 p-2">
               <select
-                value={Filter.brandID}
-                onChange={async (e) => {
-                  await inputOnChange("brandID", e.target.value);
+                value={productFormData.categoryID}
+                onChange={(e) => {
+                  productFormOnChange("categoryID", e.target.value);
                 }}
                 className="form-control form-select col-md-4 p-2"
               >
@@ -208,7 +180,9 @@ const CreateForm = () => {
                 {BrandList !== null ? (
                   BrandList.map((item, i) => {
                     return (
-                      <option value={item["_id"]}>{item["brandName"]}</option>
+                      <option key={i} value={item["_id"]}>
+                        {item["brandName"]}
+                      </option>
                     );
                   })
                 ) : (
@@ -221,9 +195,9 @@ const CreateForm = () => {
             <label>Categories</label>
             <div className="col-md-4 p-2">
               <select
-                value={Filter.categoryID}
-                onChange={async (e) => {
-                  await inputOnChange("categoryID", e.target.value);
+                value={productFormData.brandID}
+                onChange={(e) => {
+                  productFormOnChange("brandID", e.target.value);
                 }}
                 className="form-control form-select"
               >
@@ -231,7 +205,7 @@ const CreateForm = () => {
                 {CategoryList !== null ? (
                   CategoryList.map((item, i) => {
                     return (
-                      <option value={item["_id"]}>
+                      <option key={i} value={item["_id"]}>
                         {item["categoryName"]}
                       </option>
                     );
@@ -243,22 +217,6 @@ const CreateForm = () => {
             </div>
           </div>
           <div></div>
-          <div className="col-md-4 p-2">
-            <label>categoryID</label>
-            <input
-              ref={(input) => (categoryID = input)}
-              type="text"
-              className="form-control"
-            />
-          </div>
-          <div className="col-md-4 p-2">
-            <label> brandID</label>
-            <input
-              ref={(input) => (brandID = input)}
-              type="text"
-              className="form-control"
-            />
-          </div>
         </div>
 
         <div className="row">
